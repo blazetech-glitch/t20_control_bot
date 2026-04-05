@@ -13,8 +13,7 @@
     "url": "https://github.com/ARNOLDT20/t20_control_bot"
   },
   "engines": {
-    "node": "18.x",
-    "npm": "10.x"
+    "node": ">=20"
   },
   "keywords": [],
   "author": "",
