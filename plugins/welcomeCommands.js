@@ -1,7 +1,18 @@
 // Welcome Commands Plugin
 const styles = require('../utils/styles');
 
+// Settings to control welcome/goodbye messages per chat
+const settings = {};
+
 module.exports = (bot, groups) => {
+    // Helper function to get settings for a chat
+    const getSettings = (chatId) => {
+        if (!settings[chatId]) {
+            settings[chatId] = { welcome: true, goodbye: true };
+        }
+        return settings[chatId];
+    };
+
     bot.on('message', async (msg) => {
         if (msg.chat.type !== 'group' && msg.chat.type !== 'supergroup') {
             return;
@@ -11,7 +22,9 @@ module.exports = (bot, groups) => {
             groups.push(msg.chat.id);
         }
 
-        if (msg.new_chat_members && msg.new_chat_members.length) {
+        const chatSettings = getSettings(msg.chat.id);
+
+        if (msg.new_chat_members && msg.new_chat_members.length && chatSettings.welcome) {
             const names = msg.new_chat_members.map(user => `${user.first_name || 'New member'}${user.last_name ? ' ' + user.last_name : ''}`);
             const joinedUsers = names.join(', ');
             const groupName = msg.chat.title || 'this community';
@@ -34,7 +47,7 @@ ${styles.dividerLong}
             }
         }
 
-        if (msg.left_chat_member) {
+        if (msg.left_chat_member && chatSettings.goodbye) {
             const user = msg.left_chat_member;
             const groupName = msg.chat.title || 'this community';
             const goodbyeText = `
@@ -67,7 +80,8 @@ ${styles.dividerLong}
 Choose a command from the buttons below or type it manually.
 
 ${styles.divider}
-<b>Tip:</b> Use <code>/help</code> or <code>/start</code> to see more features.`;
+<b>Tip:</b> Use <code>/help</code> or <code>/start</code> to see more features.
+Use <code>/welcome on/off</code> and <code>/goodbye on/off</code> to control messages.`;
 
         const keyboard = [
             [
@@ -85,6 +99,10 @@ ${styles.divider}
             [
                 { text: '/autopost', callback_data: '/autopost' },
                 { text: '/admin list', callback_data: '/admin list' }
+            ],
+            [
+                { text: '/welcome on/off', callback_data: '/welcome status' },
+                { text: '/goodbye on/off', callback_data: '/goodbye status' }
             ]
         ];
 
@@ -97,6 +115,38 @@ ${styles.divider}
         };
 
         bot.sendPhoto(msg.chat.id, 'https://files.catbox.moe/eycaql.png', options);
+    });
+
+    // === TOGGLE WELCOME MESSAGES ===
+    bot.onText(/\/welcome\s+(on|off)/, (msg, match) => {
+        const action = match[1];
+        const chatSettings = getSettings(msg.chat.id);
+        chatSettings.welcome = action === 'on';
+        const status = chatSettings.welcome ? 'enabled' : 'disabled';
+        bot.sendMessage(msg.chat.id, `✅ Welcome messages have been <b>${status}</b>.`, { parse_mode: 'HTML' });
+    });
+
+    // === TOGGLE GOODBYE MESSAGES ===
+    bot.onText(/\/goodbye\s+(on|off)/, (msg, match) => {
+        const action = match[1];
+        const chatSettings = getSettings(msg.chat.id);
+        chatSettings.goodbye = action === 'on';
+        const status = chatSettings.goodbye ? 'enabled' : 'disabled';
+        bot.sendMessage(msg.chat.id, `✅ Goodbye messages have been <b>${status}</b>.`, { parse_mode: 'HTML' });
+    });
+
+    // === WELCOME STATUS ===
+    bot.onText(/\/welcome\s+status/, (msg) => {
+        const chatSettings = getSettings(msg.chat.id);
+        const status = chatSettings.welcome ? 'enabled' : 'disabled';
+        bot.sendMessage(msg.chat.id, `ℹ️ Welcome messages are currently <b>${status}</b>.`, { parse_mode: 'HTML' });
+    });
+
+    // === GOODBYE STATUS ===
+    bot.onText(/\/goodbye\s+status/, (msg) => {
+        const chatSettings = getSettings(msg.chat.id);
+        const status = chatSettings.goodbye ? 'enabled' : 'disabled';
+        bot.sendMessage(msg.chat.id, `ℹ️ Goodbye messages are currently <b>${status}</b>.`, { parse_mode: 'HTML' });
     });
 
     // Handle callback queries from inline keyboard buttons
