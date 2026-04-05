@@ -64,17 +64,52 @@ ${styles.dividerLong}
 
     bot.onText(/\/menu/, (msg) => {
         const menuText = `${styles.header('T20 CONTROL MENU', '📜')}
-${styles.listItem('/start', 'Show the bot welcome and command overview')}
-${styles.listItem('/menu', 'Show this menu')}
-${styles.listItem('/ping', 'Check bot latency and status')}
-${styles.listItem('/help', 'Show help information')}
-${styles.listItem('/id', 'Show your user and chat ID')}
-${styles.listItem('/post [text]', 'Post content to the configured channel')}
-${styles.listItem('/autopost on/off/now/status', 'Manage auto-posting')}
-${styles.listItem('/admin list', 'Show configured admin list')}
+Choose a command from the buttons below or type it manually.
 
 ${styles.divider}
 <b>Tip:</b> Use <code>/help</code> or <code>/start</code> to see more features.`;
-        bot.sendMessage(msg.chat.id, menuText, { parse_mode: 'HTML' });
+
+        const keyboard = [
+            [
+                { text: '/start', callback_data: '/start' },
+                { text: '/menu', callback_data: '/menu' }
+            ],
+            [
+                { text: '/ping', callback_data: '/ping' },
+                { text: '/help', callback_data: '/help' }
+            ],
+            [
+                { text: '/id', callback_data: '/id' },
+                { text: '/post', callback_data: '/post' }
+            ],
+            [
+                { text: '/autopost', callback_data: '/autopost' },
+                { text: '/admin list', callback_data: '/admin list' }
+            ]
+        ];
+
+        const options = {
+            caption: menuText,
+            parse_mode: 'HTML',
+            reply_markup: {
+                inline_keyboard: keyboard
+            }
+        };
+
+        bot.sendPhoto(msg.chat.id, 'https://files.catbox.moe/eycaql.png', options);
+    });
+
+    // Handle callback queries from inline keyboard buttons
+    bot.on('callback_query', (query) => {
+        const command = query.data;
+        const fakeMsg = {
+            message_id: query.message.message_id,
+            from: query.from,
+            chat: query.message.chat,
+            date: query.message.date,
+            text: command
+        };
+        bot.emit('message', fakeMsg);
+        bot.answerCallbackQuery(query.id);
     });
 };
