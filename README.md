@@ -6,13 +6,18 @@
 t20_control_bot/
 ├── bot.js                    # Main bot entry point
 ├── package.json              # Dependencies
+├── menu_images/              # Menu display images
+│   └── royal_menu.png       # Royal menu image
 ├── plugins/                  # Plugin modules
 │   ├── index.js             # Plugin loader
 │   ├── userCommands.js      # User-facing commands
 │   ├── adminCommands.js     # Admin moderation commands
 │   ├── channelCommands.js   # Channel posting commands
 │   ├── autoPostingCommands.js  # Auto-posting scheduler
-│   └── adminManagement.js   # Admin management
+│   ├── adminManagement.js   # Admin management
+│   ├── welcomeCommands.js   # Menu and welcome system
+│   ├── chatbot.js           # AI chatbot functionality
+│   └── [other plugins...]
 ├── utils/                    # Utility modules
 │   └── styles.js            # Beautiful text formatting
 └── bot_old.js               # Backup of previous version
@@ -43,11 +48,17 @@ t20_control_bot/
 - `/setchannel [id]` - Change posting channel
 - `/broadcast [text]` - Send message to all groups
 
-### Group Management
-- `/welcome on/off` - Enable/disable welcome messages for new members
-- `/welcome status` - Check welcome message status
-- `/goodbye on/off` - Enable/disable goodbye messages for leaving members
-- `/goodbye status` - Check goodbye message status
+### Chatbot (AI Assistant)
+- `/chat [message]` - Talk to AI chatbot
+- `/chatbot` - Chatbot help and features
+- **DM Mode** - Direct message the bot for automatic AI responses
+- **Smart Responses** - Keyword recognition and contextual replies
+
+### Menu System
+- `/menu` - Royal styled command menu with system info
+- **Image Display** - Menu image sent first, followed by details
+- **Local Images** - Menu images stored in `menu_images/` folder
+- **Fallback Support** - Text-only menu if image fails
 - `/testwelcome` - Test welcome message (groups only)
 - `/testgoodbye` - Test goodbye message (groups only)
 
