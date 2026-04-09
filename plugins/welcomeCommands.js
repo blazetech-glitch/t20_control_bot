@@ -1,4 +1,6 @@
 // Welcome Commands Plugin
+const path = require('path');
+const fs = require('fs');
 const styles = require('../utils/styles');
 
 // Settings to control welcome/goodbye messages per chat
@@ -158,8 +160,17 @@ ${styles.menuFooter('ARNOLD T20')}`;
 
             // Send the royal menu image first, then the menu details
             try {
-                // Send the menu image
-                await bot.sendPhoto(msg.chat.id, 'menu_images/royal_menu.png', {
+                // Resolve the image path from the project root in a reliable way
+                const menuImagePath = path.resolve(__dirname, '../menu_images/royal_menu.png');
+
+                if (!fs.existsSync(menuImagePath)) {
+                    throw new Error(`Menu image not found: ${menuImagePath}`);
+                }
+
+                // Send the menu image from a readable stream for better compatibility
+                const menuImageStream = fs.createReadStream(menuImagePath);
+
+                await bot.sendPhoto(msg.chat.id, menuImageStream, {
                     caption: '👑 Welcome to ARNOLD T20 Royal Command Center 👑',
                     parse_mode: 'HTML'
                 });

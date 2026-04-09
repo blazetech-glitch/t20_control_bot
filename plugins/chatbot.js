@@ -141,7 +141,8 @@ module.exports = (bot) => {
     console.log('🤖 Chatbot loaded');
 
     // Handle chatbot conversations
-    bot.onText(/\/chat (.+)/, async (msg, match) => {        const settings = getGroupSettings(msg.chat.id);
+    bot.onText(/\/chat (.+)/, async (msg, match) => {
+        const settings = getGroupSettings(msg.chat.id);
         if (!settings.chatbot) {
             bot.sendMessage(msg.chat.id, styles.errorMsg('Chatbot is currently disabled in this chat.'), { parse_mode: 'HTML' });
             return;
@@ -180,30 +181,30 @@ ${styles.dividerShort}
 
     // Chatbot help command
     bot.onText(/\/chatbot/, async (msg) => {
-const helpText = `${styles.header('🤖 T20 WOLF AI Chatbot', '🐺🔥')}
+        const helpText = `${styles.header('🤖 T20 WOLF AI Chatbot', '🐺🔥')}
 <i>Powered by T20 WOLF AI</i>
 
 ${styles.section('💬', 'Chat Commands', [
-    styles.listItem('💭', '/chat [message] — Talk to T20 WOLF AI'),
-    styles.listItem('🤖', 'DM me directly — Auto AI chat mode'),
-    styles.listItem('❓', 'Ask questions — Get intelligent responses'),
-    styles.listItem('🆘', '/chatbot — This help menu')
-])}
+            styles.listItem('💭', '/chat [message] — Talk to T20 WOLF AI'),
+            styles.listItem('🤖', 'DM me directly — Auto AI chat mode'),
+            styles.listItem('❓', 'Ask questions — Get intelligent responses'),
+            styles.listItem('🆘', '/chatbot — This help menu')
+        ])}
 
 ${styles.section('🐺', 'T20 WOLF AI Features', [
-    styles.listItem('🎯', 'Natural conversations'),
-    styles.listItem('💡', 'Smart question answering'),
-    styles.listItem('🌐', 'Powered by T20 WOLF AI'),
-    styles.listItem('⚡', 'Real-time AI responses'),
-    styles.listItem('🔥', 'Advanced AI capabilities')
-])}
+            styles.listItem('🎯', 'Natural conversations'),
+            styles.listItem('💡', 'Smart question answering'),
+            styles.listItem('🌐', 'Powered by T20 WOLF AI'),
+            styles.listItem('⚡', 'Real-time AI responses'),
+            styles.listItem('🔥', 'Advanced AI capabilities')
+        ])}
 
 ${styles.section('🔧', 'How It Works', [
-    styles.listItem('🔗', 'Primary: T20 WOLF AI API'),
-    styles.listItem('🛡️', 'Fallback: Intelligent responses'),
-    styles.listItem('🎪', 'Pattern: Advanced AI processing'),
-    styles.listItem('📚', 'Learning: Context awareness')
-])}
+            styles.listItem('🔗', 'Primary: T20 WOLF AI API'),
+            styles.listItem('🛡️', 'Fallback: Intelligent responses'),
+            styles.listItem('🎪', 'Pattern: Advanced AI processing'),
+            styles.listItem('📚', 'Learning: Context awareness')
+        ])}
 
 ${styles.dividerLong}
 🚀 <i>Try: "/chat hello" or DM me directly!</i>
