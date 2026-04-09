@@ -62,33 +62,36 @@ const styles = {
     warningMsg: (message) => `⚠️ <b>Warning!</b>\n${message}`,
     infoMsg: (message) => `ℹ️ <b>Info:</b>\n${message}`,
 
-    // Premium menu styling
+    // Premium menu styling (ROYAL STYLE)
     menuHeader: (title) => {
-        return `╔╭━━〔 ✦✦✦ ${title} ✦✦✦ 〕━━╮`;
+        return `👑═══════════════════════════════════════════👑
+║  ✨ ${title} ✨
+║  Royal Control Center
+👑═══════════════════════════════════════════👑`;
     },
 
     menuInfo: (label, value) => {
-        return `│ ✦ ${label} : ${value}`;
+        return `  💎 ${label} : ${value}`;
     },
 
     menuClosing: () => {
-        return `╰─────────────────╯`;
+        return `👑═══════════════════════════════════════════👑`;
     },
 
     menuDivider: () => {
-        return `━━━━━━━━━━━━━━━━━━━━━━`;
+        return `═══════════════════════════════════════════`;
     },
 
     menuCategory: (emoji, title) => {
-        return `\n${emoji} ${title}`;
+        return `\n${emoji} <b>━━━ ${title} ━━━</b>`;
     },
 
     menuItem: (emoji, text) => {
-        return `${emoji} ${text}`;
+        return `  ${emoji} ${text}`;
     },
 
     menuFooter: (credit) => {
-        return `\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ${credit}©`;
+        return `\n  👑 ᴍᴀsᴛᴇʀ : ${credit} 👑`;
     },
 
     // Format uptime nicely
