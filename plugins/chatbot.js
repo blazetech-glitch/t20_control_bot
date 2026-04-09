@@ -27,18 +27,15 @@ async function getAIResponse(message) {
             return response.data.reply;
         }
 
-        // If unexpected response format, use fallback
         throw new Error('Unexpected API response format');
 
     } catch (error) {
         console.error('T20 WOLF API error:', error.message);
-
-        // Intelligent fallback responses based on message content
-        return getIntelligentFallback(message);
+        return '⚠️ T20 WOLF AI is currently unavailable. Please try again later.';
     }
 }
 
-// Intelligent fallback response system
+// Intelligent fallback response system (disabled: chatbot now uses only online API replies)
 function getIntelligentFallback(message) {
     const text = message.toLowerCase().trim();
 
@@ -201,7 +198,7 @@ ${styles.section('🐺', 'T20 WOLF AI Features', [
 
 ${styles.section('🔧', 'How It Works', [
             styles.listItem('🔗', 'Primary: T20 WOLF AI API'),
-            styles.listItem('🛡️', 'Fallback: Intelligent responses'),
+            styles.listItem('🛡️', 'Online only: No local chatbot fallback'),
             styles.listItem('🎪', 'Pattern: Advanced AI processing'),
             styles.listItem('📚', 'Learning: Context awareness')
         ])}

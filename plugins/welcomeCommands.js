@@ -1,7 +1,15 @@
 // Welcome Commands Plugin
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 const styles = require('../utils/styles');
+
+let sharp;
+try {
+    sharp = require('sharp');
+} catch (err) {
+    sharp = null;
+}
 
 // Settings to control welcome/goodbye messages per chat
 const settings = {};
@@ -162,20 +170,38 @@ ${styles.menuFooter('ARNOLD T20')}`;
             try {
                 // Resolve the image path from the project root in a reliable way
                 const menuImagePath = path.resolve(__dirname, '../menu_images/royal_menu.png');
+                const remoteMenuUrl = 'https://files.catbox.moe/fruf4o.png';
 
                 if (!fs.existsSync(menuImagePath)) {
                     throw new Error(`Menu image not found: ${menuImagePath}`);
                 }
 
-                // Send the menu image from a readable stream for better compatibility
-                const menuImageStream = fs.createReadStream(menuImagePath);
+                const caption = '👑 Welcome to ARNOLD T20 Royal Command Center 👑';
+                let imageSource = menuImagePath;
+                let tempFilePath;
 
-                await bot.sendPhoto(msg.chat.id, menuImageStream, {
-                    caption: '👑 Welcome to ARNOLD T20 Royal Command Center 👑',
+                if (sharp) {
+                    tempFilePath = path.join(os.tmpdir(), `t20-menu-${Date.now()}.jpg`);
+                    await sharp(menuImagePath)
+                        .resize(800, 800, { fit: 'inside' })
+                        .jpeg({ quality: 80 })
+                        .toFile(tempFilePath);
+                    imageSource = tempFilePath;
+                }
+
+                await bot.sendPhoto(msg.chat.id, imageSource, {
+                    caption,
                     parse_mode: 'HTML'
                 });
 
-                // Then send the menu details
+                if (tempFilePath && fs.existsSync(tempFilePath)) {
+                    try {
+                        fs.unlinkSync(tempFilePath);
+                    } catch (cleanupErr) {
+                        console.warn('Unable to delete temporary menu image:', cleanupErr.message);
+                    }
+                }
+
                 await bot.sendMessage(msg.chat.id, menuText, {
                     parse_mode: 'HTML',
                     reply_markup: {
@@ -183,11 +209,24 @@ ${styles.menuFooter('ARNOLD T20')}`;
                     }
                 });
             } catch (error) {
-                console.error('Failed to send menu image, using text fallback:', error.message);
-                // Fallback to text-only menu if image fails
+                console.error('Failed to send menu image, trying hosted fallback:', error.message);
+
                 const menuWithImageLink = menuText + '\n\n<a href="https://files.catbox.moe/fruf4o.png">👑 View Royal Menu Image</a>';
 
-                await bot.sendMessage(msg.chat.id, menuWithImageLink, {
+                await bot.sendPhoto(msg.chat.id, 'https://files.catbox.moe/fruf4o.png', {
+                    caption: '👑 Welcome to ARNOLD T20 Royal Command Center (fallback)',
+                    parse_mode: 'HTML'
+                }).catch(async (photoErr) => {
+                    console.error('Hosted fallback image send failed:', photoErr.message);
+                    await bot.sendMessage(msg.chat.id, menuWithImageLink, {
+                        parse_mode: 'HTML',
+                        reply_markup: {
+                            inline_keyboard: keyboard
+                        }
+                    });
+                });
+
+                await bot.sendMessage(msg.chat.id, menuText, {
                     parse_mode: 'HTML',
                     reply_markup: {
                         inline_keyboard: keyboard
