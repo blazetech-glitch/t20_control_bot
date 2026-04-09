@@ -80,6 +80,20 @@ Use <code>/set &lt;setting&gt; &lt;value&gt;</code> to change settings.`;
         bot.sendMessage(msg.chat.id, styles.successMsg(`Welcome Messages ${status}`), { parse_mode: 'HTML' });
     });
 
+    // === TOGGLE CHATBOT ===
+    bot.onText(/\/togglechatbot/, (msg) => {
+        if (!isAdmin(msg.from.id)) {
+            bot.sendMessage(msg.chat.id, styles.errorMsg('Admin command only.'), { parse_mode: 'HTML' });
+            return;
+        }
+
+        const settings = getGroupSettings(msg.chat.id);
+        settings.chatbot = !settings.chatbot;
+        const status = settings.chatbot ? '✅ Enabled' : '❌ Disabled';
+
+        bot.sendMessage(msg.chat.id, styles.successMsg(`Chatbot ${status}`), { parse_mode: 'HTML' });
+    });
+
     // === SET GROUP RULES ===
     bot.onText(/\/setrules\s+(.+)/, (msg, match) => {
         if (!isAdmin(msg.from.id)) {
