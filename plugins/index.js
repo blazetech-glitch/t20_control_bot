@@ -71,6 +71,9 @@ module.exports = (bot, isAdmin, channelId, adminIds, groups, botStartTime) => {
     moderationCommands(bot, isAdmin);
     console.log('✅ Moderation commands loaded');
 
+    const autoPosting = autoPostingCommands(bot, isAdmin, channelId);
+    console.log('✅ Auto-posting commands loaded');
+
     chatbot(bot);
     console.log('✅ Chatbot loaded');
 

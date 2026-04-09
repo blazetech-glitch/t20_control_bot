@@ -15,6 +15,8 @@ try {
 // Settings to control welcome/goodbye messages per chat
 // Moved to settings.js
 
+module.exports = (bot, groups, botStartTime) => {
+
 bot.on('message', async (msg) => {
 
     if (msg.chat.type !== 'group' && msg.chat.type !== 'supergroup') return;

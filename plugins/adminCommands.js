@@ -102,6 +102,38 @@ module.exports = (bot, isAdmin) => {
         }
     });
 
+    // === SET PROFILE STATUS ===
+    bot.onText(/\/setstatus\s+([\s\S]+)/, async (msg, match) => {
+        if (!isAdmin(msg.from.id)) {
+            bot.sendMessage(msg.chat.id, styles.errorMsg('Admin command only.'), { parse_mode: 'HTML' });
+            return;
+        }
+
+        const statusText = match[1].trim();
+        if (!statusText) {
+            bot.sendMessage(msg.chat.id, styles.errorMsg('Usage: /setstatus Your status message here'), { parse_mode: 'HTML' });
+            return;
+        }
+
+        try {
+            if (typeof bot.setMyDescription === 'function') {
+                await bot.setMyDescription({ description: statusText });
+            } else if (typeof bot._request === 'function') {
+                await bot._request('setMyDescription', { description: statusText });
+            }
+
+            if (typeof bot.setMyShortDescription === 'function') {
+                await bot.setMyShortDescription({ short_description: statusText.slice(0, 120) });
+            } else if (typeof bot._request === 'function') {
+                await bot._request('setMyShortDescription', { short_description: statusText.slice(0, 120) });
+            }
+
+            bot.sendMessage(msg.chat.id, styles.successMsg('✅ Profile status updated successfully.'), { parse_mode: 'HTML' });
+        } catch (err) {
+            bot.sendMessage(msg.chat.id, styles.errorMsg(`❌ Failed to update status: ${err.message}`), { parse_mode: 'HTML' });
+        }
+    });
+
     // === PIN MESSAGE ===
     bot.onText(/\/pin/, (msg) => {
         if (!isAdmin(msg.from.id)) {
