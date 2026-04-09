@@ -49,10 +49,17 @@ t20_control_bot/
 - `/broadcast [text]` - Send message to all groups
 
 ### Chatbot (AI Assistant)
-- `/chat [message]` - Talk to AI chatbot
+- `/chat [message]` - Talk to AI chatbot powered by external API
 - `/chatbot` - Chatbot help and features
 - **DM Mode** - Direct message the bot for automatic AI responses
-- **Smart Responses** - Keyword recognition and contextual replies
+- **External AI** - Responses fetched from `t20-classic-ai-chat.vercel.app`
+- **Smart Responses** - Real-time AI conversations with intelligent replies
+
+### Auto-Posting System
+- **5-Hour Interval** - Content posted every 5 hours automatically
+- **Multi-Content Types** - Blogs, tech tips, questions, and motivational posts
+- **Beautiful Templates** - Rich formatting with emojis and styling
+- **Channel Integration** - Posts to configured Telegram channel
 
 ### Menu System
 - `/menu` - Royal styled command menu with system info
@@ -91,6 +98,19 @@ Each plugin is a separate module that:
 1. Exports a function that receives the bot instance
 2. Registers its own commands
 3. Has access to utility styles
+
+## 🌐 API Integrations
+
+### External AI Chatbot
+- **API Endpoint**: `https://t20-classic-ai-chat.vercel.app/api/chat`
+- **Method**: POST with JSON payload
+- **Features**: Real-time AI conversations, intelligent responses
+- **Fallback**: Graceful error handling when API is unavailable
+
+### Auto-Posting System
+- **Interval**: 5 hours between posts
+- **Content Sources**: Tech tips, questions, blog posts, motivational messages
+- **Templates**: Rich HTML formatting with emojis and styling
 4. Can be easily modified or disabled
 
 ### Adding a New Plugin

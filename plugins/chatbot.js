@@ -1,75 +1,59 @@
 // Chatbot Plugin
-// AI-powered conversational responses
+// AI-powered conversational responses using external API
 
+const axios = require('axios');
 const styles = require('../utils/styles');
 
-// Simple AI responses database
-const responses = {
-    greetings: [
-        "Hello! 👋 How can I help you today?",
-        "Hi there! 🤖 What can I do for you?",
-        "Greetings! 🌟 How may I assist you?",
-        "Hey! 😊 What would you like to know?"
-    ],
-    questions: {
-        "how are you": ["I'm doing great! Thanks for asking. 🤖", "I'm excellent! Ready to help you. ✨"],
-        "what can you do": ["I can help with various tasks! Type /menu to see all my commands. 📋", "I'm your AI assistant! Check /start for all my capabilities. 🚀"],
-        "who made you": ["I was created by ARNOLD T20! 👑 The ultimate bot developer.", "ARNOLD T20 built me with love and code! 💻❤️"],
-        "what is your name": ["I'm T20 Control Bot! 🤖 Your royal assistant.", "You can call me T20 Bot! 👑"],
-        "help": ["Type /menu for all commands, or /start to get started! 📚", "Need help? Try /help or /menu for command list! 🆘"]
-    },
-    keywords: {
-        "hello": "greetings",
-        "hi": "greetings",
-        "hey": "greetings",
-        "howdy": "greetings",
-        "greetings": "greetings",
-        "good morning": "greetings",
-        "good afternoon": "greetings",
-        "good evening": "greetings",
-        "how are you": "how are you",
-        "how do you do": "how are you",
-        "what can you do": "what can you do",
-        "what do you do": "what can you do",
-        "who made you": "who made you",
-        "who created you": "who made you",
-        "what is your name": "what is your name",
-        "your name": "what is your name",
-        "help": "help",
-        "assist": "help",
-        "support": "help"
-    },
-    fallback: [
-        "I'm not sure I understand. Try /menu for available commands! 🤔",
-        "Hmm, I didn't catch that. Type /help for assistance! ❓",
-        "Sorry, I don't understand. Check /start for all my features! 📋",
-        "I'm still learning! Use /menu to see what I can do. 📚"
-    ]
-};
-
-// Function to get AI response
-function getAIResponse(message) {
-    const text = message.toLowerCase().trim();
-
-    // Check for exact question matches
-    for (const [question, responses] of Object.entries(responses.questions)) {
-        if (text.includes(question)) {
-            return responses[Math.floor(Math.random() * responses.length)];
-        }
-    }
-
-    // Check for keyword matches
-    for (const [keyword, category] of Object.entries(responses.keywords)) {
-        if (text.includes(keyword)) {
-            if (category === "greetings") {
-                return responses.greetings[Math.floor(Math.random() * responses.greetings.length)];
+// Function to get AI response from external API
+async function getAIResponse(message) {
+    try {
+        const response = await axios.post('https://t20-classic-ai-chat.vercel.app/api/chat', {
+            message: message,
+            userId: 'telegram_bot_user'
+        }, {
+            timeout: 10000, // 10 second timeout
+            headers: {
+                'Content-Type': 'application/json',
+                'User-Agent': 'T20-Control-Bot/1.0'
             }
-            return responses.questions[category][Math.floor(Math.random() * responses.questions[category].length)];
-        }
-    }
+        });
 
-    // Fallback response
-    return responses.fallback[Math.floor(Math.random() * responses.fallback.length)];
+        if (response.data && response.data.response) {
+            return response.data.response;
+        }
+
+        // Fallback if API doesn't return expected format
+        return "🤖 I'm processing your message... Please try again in a moment!";
+
+    } catch (error) {
+        console.error('Chatbot API error:', error.message);
+
+        // Fallback responses for common cases when API fails
+        const text = message.toLowerCase().trim();
+
+        if (text.includes('hello') || text.includes('hi') || text.includes('hey')) {
+            return "Hello! 👋 I'm your T20 Control Bot. My AI brain is currently connecting - please try again in a moment!";
+        }
+
+        if (text.includes('how are you')) {
+            return "I'm doing great! 🤖 Just fine-tuning my AI connections. How can I help you today?";
+        }
+
+        if (text.includes('what can you do') || text.includes('help')) {
+            return "I can help with many things! Use /menu to see all my commands, or /chatbot for AI chat features. My full AI brain is connecting soon! 🚀";
+        }
+
+        if (text.includes('who made you') || text.includes('who created you')) {
+            return "I was created by ARNOLD T20! 👑 The ultimate bot developer. My AI features are powered by advanced technology.";
+        }
+
+        if (text.includes('what is your name')) {
+            return "I'm T20 Control Bot! 🤖 Your royal assistant with AI capabilities. Currently connecting to my advanced AI systems.";
+        }
+
+        // Generic fallback
+        return "🤖 I'm currently connecting to my AI systems at t20-classic-ai-chat.vercel.app. Please try again in a moment, or use /menu for all my available commands!";
+    }
 }
 
 module.exports = (bot) => {
@@ -78,14 +62,14 @@ module.exports = (bot) => {
     // Handle chatbot conversations
     bot.onText(/\/chat (.+)/, async (msg, match) => {
         const query = match[1];
-        const response = getAIResponse(query);
+        const response = await getAIResponse(query);
 
         const reply = `${styles.header('🤖 T20 Chatbot', '💬')}
 <i>Your AI Assistant</i>
 
 <b>You:</b> ${query}
 
-<b>T20 Bot:</b> ${response}
+<b>T20 AI:</b> ${response}
 
 ${styles.dividerShort}
 💡 <i>Try asking me questions or type /menu for commands!</i>`;
@@ -97,14 +81,14 @@ ${styles.dividerShort}
     bot.on('message', async (msg) => {
         // Only respond in private chats, not groups
         if (msg.chat.type === 'private' && !msg.text?.startsWith('/')) {
-            const response = getAIResponse(msg.text || '');
+            const response = await getAIResponse(msg.text || '');
 
             const reply = `${styles.header('🤖 T20 Chatbot', '💬')}
 <i>AI Conversation</i>
 
 <b>You:</b> ${msg.text}
 
-<b>T20 Bot:</b> ${response}
+<b>T20 AI:</b> ${response}
 
 ${styles.dividerShort}
 💡 <i>Type /menu for commands or ask me anything!</i>`;
@@ -115,26 +99,25 @@ ${styles.dividerShort}
 
     // Chatbot help command
     bot.onText(/\/chatbot/, async (msg) => {
-        const helpText = `${styles.header('🤖 T20 Chatbot', '💬')}
-<i>AI-Powered Conversations</i>
+const helpText = `${styles.header('🤖 T20 AI Chatbot', '🧠')}
+<i>AI Integration In Progress</i>
 
 ${styles.section('💬', 'Chat Commands', [
-            styles.listItem('💭', '/chat [message] — Talk to AI'),
-            styles.listItem('🤖', 'DM me directly — Auto chat mode'),
-            styles.listItem('❓', 'Ask questions — Get smart responses'),
-            styles.listItem('🆘', '/chatbot — This help menu')
-        ])}
+    styles.listItem('💭', '/chat [message] — Talk to AI (connecting...)'),
+    styles.listItem('🤖', 'DM me directly — Auto chat mode'),
+    styles.listItem('❓', 'Ask questions — Smart responses'),
+    styles.listItem('🆘', '/chatbot — This help menu')
+])}
 
-${styles.section('🧠', 'What I Can Do', [
-            styles.listItem('👋', 'Greetings & conversations'),
-            styles.listItem('❓', 'Answer questions about myself'),
-            styles.listItem('📚', 'Help with bot commands'),
-            styles.listItem('🎯', 'Smart keyword recognition')
-        ])}
+${styles.section('🔄', 'AI Status', [
+    styles.listItem('🌐', 'API: t20-classic-ai-chat.vercel.app'),
+    styles.listItem('⏳', 'Status: Connecting to AI systems'),
+    styles.listItem('✅', 'Fallback: Smart responses active'),
+    styles.listItem('🚀', 'Full AI: Coming soon!')
+])}
 
 ${styles.dividerLong}
-🚀 <i>Try: "/chat hello" or just DM me!</i>
-
+💡 <i>AI integration is being established. For now, enjoy smart conversational responses!</i>
 ${styles.menuFooter('ARNOLD T20')}`;
 
         await bot.sendMessage(msg.chat.id, helpText, { parse_mode: 'HTML' });

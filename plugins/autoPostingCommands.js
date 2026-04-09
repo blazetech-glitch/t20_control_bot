@@ -37,7 +37,7 @@ const getRandomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 module.exports = (bot, isAdmin, channelId) => {
     let autoPostingEnabled = true;
     let autoPostingInterval = null;
-    const AUTO_POST_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
+    const AUTO_POST_INTERVAL_MS = 5 * 60 * 60 * 1000; // 5 hours
 
     // Post auto-content with beautiful templates
     const postAutoContent = async () => {
