@@ -366,4 +366,4 @@ Your bot is now production-ready and feature-complete! 🚀
 **Version:** 3.0
 **Updated:** 2026
 **Creator:** T20
-**Branding:** horla-pookie©
+**Branding:** ARNOLD T20

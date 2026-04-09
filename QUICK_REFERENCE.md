@@ -294,7 +294,7 @@ Button | Action
 
 ## 🌐 Bot Branding
 
-**Powered by:** horla-pookie©
+**Powered by:** ARNOLD T20
 
 This branding appears in:
 - `/menu` command footer

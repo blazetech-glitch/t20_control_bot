@@ -474,4 +474,4 @@ The `/menu` command provides quick-access buttons:
 **Bot Version:** 3.0
 **Last Updated:** 2026
 **Creator:** T20
-**Branding:** horla-pookie©
+**Branding:** ARNOLD T20

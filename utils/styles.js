@@ -62,12 +62,12 @@ const styles = {
     warningMsg: (message) => `⚠️ <b>Warning!</b>\n${message}`,
     infoMsg: (message) => `ℹ️ <b>Info:</b>\n${message}`,
 
-    // Premium menu styling (ROYAL STYLE)
+    // Premium menu styling (ROYAL STYLE - COMPACT)
     menuHeader: (title) => {
-        return `👑═══════════════════════════════════════════👑
+        return `👑━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━👑
 ║  ✨ ${title} ✨
 ║  Royal Control Center
-👑═══════════════════════════════════════════👑`;
+👑━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━👑`;
     },
 
     menuInfo: (label, value) => {
@@ -75,15 +75,15 @@ const styles = {
     },
 
     menuClosing: () => {
-        return `👑═══════════════════════════════════════════👑`;
+        return `👑━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━👑`;
     },
 
     menuDivider: () => {
-        return `═══════════════════════════════════════════`;
+        return `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
     },
 
     menuCategory: (emoji, title) => {
-        return `\n${emoji} <b>━━━ ${title} ━━━</b>`;
+        return `\n${emoji} <b>${title}</b>`;
     },
 
     menuItem: (emoji, text) => {

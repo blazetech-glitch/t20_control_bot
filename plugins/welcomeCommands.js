@@ -104,43 +104,32 @@ ${styles.menuInfo('Pʟᴀᴛғᴏʀᴍ', 'Linux')}
 ${styles.menuInfo('Rᴀᴍ', '93%')}
 ${styles.menuClosing()}
 
-🎮 GROUP MANAGEMENT BOT
+👑 ROYAL COMMAND CENTER
 ${styles.menuDivider()}
 
-${styles.menuCategory('👤', '<b>User Commands</b>')}
-${styles.menuItem('🆔', 'ID Info • User Info • Stats')}
-${styles.menuItem('🏓', 'Ping • Echo • Profile')}
+${styles.menuCategory('👤', '<b>User</b>')}
+${styles.menuItem('🆔', 'ID • Info • Stats • Ping')}
 
-${styles.menuCategory('🎮', '<b>Fun Commands</b>')}
-${styles.menuItem('🎲', '8Ball • Dice • Coin Flip')}
-${styles.menuItem('🎯', 'Choose • Rate • Joke • Reverse')}
+${styles.menuCategory('🎮', '<b>Fun</b>')}
+${styles.menuItem('🎲', '8Ball • Dice • Coin • Joke')}
 
-${styles.menuCategory('🔧', '<b>Admin Commands</b>')}
-${styles.menuItem('🚫', 'Kick • Ban • Unban • Mute')}
-${styles.menuItem('🗑️', 'Delete • Pin • Unpin')}
+${styles.menuCategory('🔧', '<b>Admin</b>')}
+${styles.menuItem('🚫', 'Kick • Ban • Mute • Delete')}
 
-${styles.menuCategory('⚠️', '<b>Moderation</b>')}
-${styles.menuItem('📊', 'Warn • Warnings • ClearWarn')}
-${styles.menuItem('⏱️', 'Timeout • Softban • SetDesc')}
+${styles.menuCategory('⚠️', '<b>Mod</b>')}
+${styles.menuItem('📊', 'Warn • Timeout • Softban')}
 
 ${styles.menuCategory('⚙️', '<b>Settings</b>')}
-${styles.menuItem('🎛️', 'Settings • SetLang • AntiSpam')}
-${styles.menuItem('📋', 'SetRules • Rules')}
-
-${styles.menuCategory('📢', '<b>Channel & Posts</b>')}
-${styles.menuItem('📝', 'Post • Broadcast • TestChannel')}
-
-${styles.menuCategory('👥', '<b>Group Management</b>')}
-${styles.menuItem('👋', 'Welcome • Goodbye • Test')}
+${styles.menuItem('🎛️', 'Config • Rules • AntiSpam')}
 
 ${styles.menuDivider()}
-Type <code>/start</code> for full help or <code>/help</code> for support
+Type <code>/start</code> for all commands
 
-${styles.menuFooter('ʜᴏʀʟᴀ-ᴘᴏᴏᴋɪᴇ')}`;
+${styles.menuFooter('ARNOLD T20')}`;
 
             const keyboard = [
                 [
-                    { text: '🏠 Start', callback_data: '/start' },
+                    { text: '👑 Start', callback_data: '/start' },
                     { text: '📚 Help', callback_data: '/help' }
                 ],
                 [
@@ -166,7 +155,7 @@ ${styles.menuFooter('ʜᴏʀʟᴀ-ᴘᴏᴏᴋɪᴇ')}`;
 
             // Try to send photo with menu image, fallback to text if it fails
             try {
-                await bot.sendPhoto(msg.chat.id, 'https://files.catbox.moe/eycaql.png', {
+                await bot.sendPhoto(msg.chat.id, 'https://files.catbox.moe/fruf4o.png', {
                     caption: menuText,
                     parse_mode: 'HTML',
                     reply_markup: {
