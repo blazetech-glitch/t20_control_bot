@@ -49,11 +49,12 @@ t20_control_bot/
 - `/broadcast [text]` - Send message to all groups
 
 ### Chatbot (AI Assistant)
-- `/chat [message]` - Talk to AI chatbot powered by external API
+- `/chat [message]` - Talk to AI chatbot with intelligent responses
 - `/chatbot` - Chatbot help and features
 - **DM Mode** - Direct message the bot for automatic AI responses
-- **External AI** - Responses fetched from `t20-classic-ai-chat.vercel.app`
-- **Smart Responses** - Real-time AI conversations with intelligent replies
+- **Smart Responses** - Context-aware conversational AI with pattern recognition
+- **Intelligent Fallbacks** - Advanced response system when external API unavailable
+- **Multi-Context Support** - Handles greetings, questions, tech talk, and more
 
 ### Auto-Posting System
 - **5-Hour Interval** - Content posted every 5 hours automatically
@@ -102,16 +103,16 @@ Each plugin is a separate module that:
 ## 🌐 API Integrations
 
 ### External AI Chatbot
-- **API Endpoint**: `https://t20-classic-ai-chat.vercel.app/api/chat`
+- **API Endpoint**: `https://t20-classic-ai-chat.vercel.app/api/chat` (currently unavailable)
 - **Method**: POST with JSON payload
-- **Features**: Real-time AI conversations, intelligent responses
-- **Fallback**: Graceful error handling when API is unavailable
+- **Features**: Intelligent fallback system with pattern recognition
+- **Fallback**: Advanced conversational AI with context awareness
+- **Status**: Using intelligent local responses until API is available
 
 ### Auto-Posting System
 - **Interval**: 5 hours between posts
 - **Content Sources**: Tech tips, questions, blog posts, motivational messages
 - **Templates**: Rich HTML formatting with emojis and styling
-4. Can be easily modified or disabled
 
 ### Adding a New Plugin
 
