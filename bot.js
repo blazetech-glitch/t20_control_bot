@@ -225,7 +225,7 @@ const bot = new TelegramBot(TOKEN, {
 });
 
 bot.getMe()
-    .then((me) => {
+    .then(async (me) => {
         console.log('');
         console.log('═'.repeat(50));
         console.log('🚀 T20 CONTROL BOT ONLINE');
@@ -239,7 +239,18 @@ bot.getMe()
         console.log('═'.repeat(50));
         console.log('');
 
-        bot.startPolling();
+        // Clear any existing webhook or competing polling session
+        try {
+            await bot._request('deleteWebhook', { drop_pending_updates: true });
+            console.log('✅ Webhook cleared — polling mode active');
+        } catch (err) {
+            console.warn('⚠️ Could not clear webhook (non-critical):', err.message);
+        }
+
+        // Small delay to let Telegram close any previous session
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        bot.startPolling({ restart: false });
 
         bot.on('error', (err) => {
             console.error('Bot error:', err.message || err);
