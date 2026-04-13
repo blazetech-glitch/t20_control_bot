@@ -17,6 +17,7 @@ const stats = require('./stats');
 const help = require('./help');
 const settings = require('./settings');
 const start = require('./start');
+const movieCommands = require('./movieCommands');
 
 module.exports = (bot, isAdmin, channelId, adminIds, groups, botStartTime) => {
     console.log('📦 Loading plugins...');
@@ -70,6 +71,9 @@ module.exports = (bot, isAdmin, channelId, adminIds, groups, botStartTime) => {
 
     moderationCommands(bot, isAdmin);
     console.log('✅ Moderation commands loaded');
+
+    movieCommands(bot);
+    console.log('✅ Movie commands loaded');
 
     const autoPosting = autoPostingCommands(bot, isAdmin, channelId);
     console.log('✅ Auto-posting commands loaded');

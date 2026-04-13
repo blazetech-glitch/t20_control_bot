@@ -126,6 +126,9 @@ bot.onText(/\/menu/, async (msg) => {
 👑 ROYAL COMMAND CENTER
 ━━━━━━━━━━━━━━━━━━━━━━━━
 
+🎬 Movies (NEW!)
+  🍿 /movies • /moviesearch • /trending
+
 👤 User
   🆔 ID • Info • Stats • Ping
 
@@ -153,6 +156,10 @@ Type /start for all commands
 
         const keyboard = {
             inline_keyboard: [
+                [
+                    { text: '🎬 Movie Hub', callback_data: 'movie_menu' },
+                    { text: '🤖 AI Chat', callback_data: 'chatbot_info' }
+                ],
                 [
                     { text: '🚀 Start', callback_data: '/start' },
                     { text: '📊 Stats', callback_data: '/stats' },
